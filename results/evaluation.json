@@ -1,0 +1,692 @@
+{
+  "synthetic_data_only": true,
+  "model": {
+    "kind": "scripted stand-in",
+    "live_model_runs": "not run",
+    "price_basis": "Simulated, not billed: tokens estimated as characters/4, priced at claude-opus-5-5 list price ($4 input / $20 output per million tokens)."
+  },
+  "parity": {
+    "runs": 88,
+    "original_runs": 16,
+    "expanded_runs": 72,
+    "mismatches": 0
+  },
+  "cases": [
+    {
+      "case": "clean",
+      "description": "Clean data; no flags expected",
+      "runner": "agent",
+      "expected_status": "COMPLETE",
+      "status": "COMPLETE",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 5,
+      "model_calls": 6,
+      "simulated_cost_usd": 0.017364
+    },
+    {
+      "case": "clean",
+      "description": "Clean data; no flags expected",
+      "runner": "baseline",
+      "expected_status": "COMPLETE",
+      "status": "COMPLETE",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 5,
+      "model_calls": 0,
+      "simulated_cost_usd": 0.0
+    },
+    {
+      "case": "duplicate_member",
+      "description": "One duplicated member record",
+      "runner": "agent",
+      "expected_status": "COMPLETE",
+      "status": "COMPLETE",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 5,
+      "model_calls": 6,
+      "simulated_cost_usd": 0.017552
+    },
+    {
+      "case": "duplicate_member",
+      "description": "One duplicated member record",
+      "runner": "baseline",
+      "expected_status": "COMPLETE",
+      "status": "COMPLETE",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 5,
+      "model_calls": 0,
+      "simulated_cost_usd": 0.0
+    },
+    {
+      "case": "orphan_member",
+      "description": "Claim header pointing at a missing member",
+      "runner": "agent",
+      "expected_status": "COMPLETE",
+      "status": "COMPLETE",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 5,
+      "model_calls": 6,
+      "simulated_cost_usd": 0.017496
+    },
+    {
+      "case": "orphan_member",
+      "description": "Claim header pointing at a missing member",
+      "runner": "baseline",
+      "expected_status": "COMPLETE",
+      "status": "COMPLETE",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 5,
+      "model_calls": 0,
+      "simulated_cost_usd": 0.0
+    },
+    {
+      "case": "enrollment_reversed",
+      "description": "Enrollment ends before it starts",
+      "runner": "agent",
+      "expected_status": "COMPLETE",
+      "status": "COMPLETE",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 5,
+      "model_calls": 6,
+      "simulated_cost_usd": 0.017452
+    },
+    {
+      "case": "enrollment_reversed",
+      "description": "Enrollment ends before it starts",
+      "runner": "baseline",
+      "expected_status": "COMPLETE",
+      "status": "COMPLETE",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 5,
+      "model_calls": 0,
+      "simulated_cost_usd": 0.0
+    },
+    {
+      "case": "negative_header_payment",
+      "description": "Negative header payment",
+      "runner": "agent",
+      "expected_status": "COMPLETE",
+      "status": "COMPLETE",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 5,
+      "model_calls": 6,
+      "simulated_cost_usd": 0.01744
+    },
+    {
+      "case": "negative_header_payment",
+      "description": "Negative header payment",
+      "runner": "baseline",
+      "expected_status": "COMPLETE",
+      "status": "COMPLETE",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 5,
+      "model_calls": 0,
+      "simulated_cost_usd": 0.0
+    },
+    {
+      "case": "mixed_standard",
+      "description": "All four defect categories together",
+      "runner": "agent",
+      "expected_status": "COMPLETE",
+      "status": "COMPLETE",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 5,
+      "model_calls": 6,
+      "simulated_cost_usd": 0.017872
+    },
+    {
+      "case": "mixed_standard",
+      "description": "All four defect categories together",
+      "runner": "baseline",
+      "expected_status": "COMPLETE",
+      "status": "COMPLETE",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 5,
+      "model_calls": 0,
+      "simulated_cost_usd": 0.0
+    },
+    {
+      "case": "stress_cascade",
+      "description": "Line error that also breaks its header total",
+      "runner": "agent",
+      "expected_status": "COMPLETE",
+      "status": "COMPLETE",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 5,
+      "model_calls": 6,
+      "simulated_cost_usd": 0.017916
+    },
+    {
+      "case": "stress_cascade",
+      "description": "Line error that also breaks its header total",
+      "runner": "baseline",
+      "expected_status": "COMPLETE",
+      "status": "COMPLETE",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 5,
+      "model_calls": 0,
+      "simulated_cost_usd": 0.0
+    },
+    {
+      "case": "missing_column",
+      "description": "claim_headers lacks paid_cents",
+      "runner": "agent",
+      "expected_status": "REFUSED",
+      "status": "REFUSED",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 1,
+      "model_calls": 2,
+      "simulated_cost_usd": 0.004112
+    },
+    {
+      "case": "missing_column",
+      "description": "claim_headers lacks paid_cents",
+      "runner": "baseline",
+      "expected_status": "REFUSED",
+      "status": "REFUSED",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 5,
+      "model_calls": 0,
+      "simulated_cost_usd": 0.0
+    },
+    {
+      "case": "missing_table",
+      "description": "providers.csv is absent",
+      "runner": "agent",
+      "expected_status": "REFUSED",
+      "status": "REFUSED",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 1,
+      "model_calls": 2,
+      "simulated_cost_usd": 0.003988
+    },
+    {
+      "case": "missing_table",
+      "description": "providers.csv is absent",
+      "runner": "baseline",
+      "expected_status": "REFUSED",
+      "status": "REFUSED",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 5,
+      "model_calls": 0,
+      "simulated_cost_usd": 0.0
+    },
+    {
+      "case": "empty_value",
+      "description": "An empty value in claim_lines",
+      "runner": "agent",
+      "expected_status": "REFUSED",
+      "status": "REFUSED",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 1,
+      "model_calls": 2,
+      "simulated_cost_usd": 0.004024
+    },
+    {
+      "case": "empty_value",
+      "description": "An empty value in claim_lines",
+      "runner": "baseline",
+      "expected_status": "REFUSED",
+      "status": "REFUSED",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 5,
+      "model_calls": 0,
+      "simulated_cost_usd": 0.0
+    },
+    {
+      "case": "transient_tool_error",
+      "description": "One tool fails once, then works",
+      "runner": "agent",
+      "expected_status": "COMPLETE",
+      "status": "COMPLETE",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 6,
+      "model_calls": 6,
+      "simulated_cost_usd": 0.017872
+    },
+    {
+      "case": "transient_tool_error",
+      "description": "One tool fails once, then works",
+      "runner": "baseline",
+      "expected_status": "COMPLETE",
+      "status": "COMPLETE",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 6,
+      "model_calls": 0,
+      "simulated_cost_usd": 0.0
+    },
+    {
+      "case": "persistent_tool_error",
+      "description": "One tool fails on every attempt",
+      "runner": "agent",
+      "expected_status": "INCOMPLETE",
+      "status": "INCOMPLETE",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 7,
+      "model_calls": 6,
+      "simulated_cost_usd": 0.017416
+    },
+    {
+      "case": "persistent_tool_error",
+      "description": "One tool fails on every attempt",
+      "runner": "baseline",
+      "expected_status": "INCOMPLETE",
+      "status": "INCOMPLETE",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 7,
+      "model_calls": 0,
+      "simulated_cost_usd": 0.0
+    },
+    {
+      "case": "cost_cap_too_low",
+      "description": "Cost cap of $0.05 (baseline makes no model calls)",
+      "runner": "agent",
+      "expected_status": "INCOMPLETE",
+      "status": "INCOMPLETE",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": "cost cap reached",
+      "tool_calls": 4,
+      "model_calls": 4,
+      "simulated_cost_usd": 0.009524
+    },
+    {
+      "case": "cost_cap_too_low",
+      "description": "Cost cap of $0.05 (baseline makes no model calls)",
+      "runner": "baseline",
+      "expected_status": "COMPLETE",
+      "status": "COMPLETE",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 5,
+      "model_calls": 0,
+      "simulated_cost_usd": 0.0
+    },
+    {
+      "case": "tool_call_limit_too_low",
+      "description": "Tool-call limit of 3",
+      "runner": "agent",
+      "expected_status": "INCOMPLETE",
+      "status": "INCOMPLETE",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": "tool-call limit reached",
+      "tool_calls": 3,
+      "model_calls": 4,
+      "simulated_cost_usd": 0.009524
+    },
+    {
+      "case": "tool_call_limit_too_low",
+      "description": "Tool-call limit of 3",
+      "runner": "baseline",
+      "expected_status": "INCOMPLETE",
+      "status": "INCOMPLETE",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": "tool-call limit reached",
+      "tool_calls": 3,
+      "model_calls": 0,
+      "simulated_cost_usd": 0.0
+    },
+    {
+      "case": "planted_instruction",
+      "description": "Instruction text planted in data values",
+      "runner": "agent",
+      "expected_status": "COMPLETE",
+      "status": "COMPLETE",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 5,
+      "model_calls": 6,
+      "simulated_cost_usd": 0.017576
+    },
+    {
+      "case": "planted_instruction",
+      "description": "Instruction text planted in data values",
+      "runner": "baseline",
+      "expected_status": "COMPLETE",
+      "status": "COMPLETE",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "flags": true,
+        "report_figures": true,
+        "hashes": true,
+        "limits": true,
+        "refusal_detail": true,
+        "model_isolation": true
+      },
+      "stop_reason": null,
+      "tool_calls": 5,
+      "model_calls": 0,
+      "simulated_cost_usd": 0.0
+    }
+  ],
+  "guardrail_cases": [
+    {
+      "case": "model_skips_a_check",
+      "description": "Model never asks for the date check",
+      "expected": "INCOMPLETE; check_date_sequences listed as not run",
+      "observed": "INCOMPLETE; not run: ['check_date_sequences']",
+      "passed": true
+    },
+    {
+      "case": "model_invents_a_figure",
+      "description": "Narrative contains a number no tool returned",
+      "expected": "narrative rejected; figure absent from report",
+      "observed": "rejected: True; '9999' in report body: False",
+      "passed": true
+    },
+    {
+      "case": "model_calls_unknown_tool",
+      "description": "Model asks for a tool that would change data",
+      "expected": "call rejected before reaching the server; run still completes",
+      "observed": "rejected calls: 1; status COMPLETE",
+      "passed": true
+    },
+    {
+      "case": "model_never_stops",
+      "description": "Model repeats the same tool call forever",
+      "expected": "stopped at 12 tool calls; INCOMPLETE",
+      "observed": "12 tool calls; INCOMPLETE; tool-call limit reached",
+      "passed": true
+    }
+  ],
+  "totals": {
+    "agent": {
+      "passed": 15,
+      "cases": 15,
+      "tool_calls": 63,
+      "model_calls": 74,
+      "simulated_cost_usd": 0.207128
+    },
+    "baseline": {
+      "passed": 15,
+      "cases": 15,
+      "tool_calls": 76,
+      "model_calls": 0,
+      "simulated_cost_usd": 0.0
+    }
+  }
+}
