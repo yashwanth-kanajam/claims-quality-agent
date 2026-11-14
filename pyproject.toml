@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68,<76"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "claims-quality-agent"
+version = "0.1.0"
+description = "MCP server and guarded agent loop over synthetic claims quality checks (synthetic data only)"
+requires-python = ">=3.10"
+# healthcare-claims-quality 0.3.0 is installed from vendor/ (see README); it is not on PyPI.
+dependencies = ["mcp>=1.2,<2", "duckdb==1.4.3"]
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+live = ["anthropic>=2,<3"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
