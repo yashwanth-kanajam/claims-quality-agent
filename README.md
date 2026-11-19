@@ -14,7 +14,7 @@ All data are synthetic. No real members, providers, payers or claims are used.
 
 ## How it works
 
-The five SQL checks come from [healthcare-claims-quality](https://github.com/yashwanth-kanajam/healthcare-claims-quality), installed from a pinned wheel in `vendor/` (version 0.3.0, built from commit `fcb3116`). None of the check logic is rewritten here. The model picks which checks to run and writes a short summary. It never touches the numbers: code copies every figure in the report from the tool results, and a summary that quotes a number no tool returned is rejected. The model never sees the claims themselves, only counts and table names. The agent was evaluated with a scripted model that follows fixed rules, behind the same interface a live model would use.
+The five SQL checks come from [healthcare-claims-quality](https://github.com/yashwanth-kanajam/healthcare-claims-quality), installed from a pinned wheel in `vendor/` (version 0.3.0, built from commit `e86ca73`). None of the check logic is rewritten here. The model picks which checks to run and writes a short summary. It never touches the numbers: code copies every figure in the report from the tool results, and a summary that quotes a number no tool returned is rejected. The model never sees the claims themselves, only counts and table names. The agent was evaluated with a scripted model that follows fixed rules, behind the same interface a live model would use.
 
 Before testing the agent, the tools' output was matched against the original checks on 88 runs (16 from the original evaluation, 72 from the expanded one), with no differences. That comparison runs in process, not over the MCP transport. The agent and baseline cases do go over it.
 

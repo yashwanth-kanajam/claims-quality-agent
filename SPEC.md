@@ -22,7 +22,7 @@ All five tools are read-only.
 | `check_date_sequences` | Invalid date-order flags | `sql/checks.sql` via `detect()` |
 | `reconcile_header_to_line` | Money-contract flags, plus header, line and naive-join totals | `sql/checks.sql`, `sql/analytics.sql` |
 
-The claims package is installed as a pinned wheel built from a clean clone of commit `fcb3116` of the public `healthcare-claims-quality` repository. No SQL or validation logic is rewritten, and that repository is not modified.
+The claims package is installed as a pinned wheel built from a clean clone of commit `e86ca73` of the public `healthcare-claims-quality` repository. No SQL or validation logic is rewritten, and that repository is not modified.
 
 ## What it must never do
 
