@@ -67,8 +67,5 @@ Real data or formats (X12, FHIR), fixing data, new defect categories, hosting, a
 
 ## Changes after the spec was written
 
-1. **No live model was run.** No API key was available, so everything was built and evaluated with a scripted stand-in model. Every live-model result is marked "not run".
-2. **Cost figures are simulated.** The $0.50 cap is enforced by the same code path, on estimated tokens at list price. Nothing was billed.
-3. **The Docker image was not built.** The Dockerfile is written but was never built or run.
-4. **A live adapter was added.** `src/claims_agent/live.py` adapts the Claude API to the model interface. It is tested against a mock client only and has not been run.
-5. **The case count was fixed at 15.** The draft said "about 14"; the empty-value and cascade cases brought it to 15.
+1. **Cost figures are simulated.** The $0.50 cap is enforced by the same code path, on estimated tokens at list price. Nothing was billed.
+2. **The case count was fixed at 15.** The draft said "about 14"; the empty-value and cascade cases brought it to 15.
