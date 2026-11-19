@@ -8,7 +8,7 @@ This is the specification the project was built to. It was written before the co
 
 The agent is given a directory holding the five synthetic claims tables: members, providers, enrollment, claim headers and claim lines. It checks the shape of the data, chooses which quality checks apply, runs them through an MCP server, and writes a reconciliation report. The report says what was checked, what was flagged, whether header and line totals agree, and what was not checked and why.
 
-The model does two things only: it picks and orders the checks, and it writes the short narrative. Every finding comes from deterministic SQL, and every number in the report is copied from tool output by code. The model never types a figure.
+Only two things are left to the model: it picks and orders the checks, and it writes the short narrative. Every finding comes from deterministic SQL, and every number in the report is copied from tool output by code. The model never types a figure.
 
 ## MCP tools
 
