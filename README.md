@@ -1,16 +1,16 @@
 # Claims Quality Agent
 
-**An agent that reports on data quality should not be trusted to produce the numbers itself.** This project puts the checks from [healthcare-claims-quality](https://github.com/yashwanth-kanajam/healthcare-claims-quality) behind an MCP server, then tests whether a model-driven agent calling those tools does any better than a fixed script.
+Claims-validation checks made available through an MCP server, then tested to see whether an agent running them beats a plain script. It didn't.
 
-**All data are synthetic.** No real members, providers, payers or claims are used, and the results say nothing about accuracy on real data.
+The agent ran against a scripted stand-in model, not a live LLM. It passed 15 of 15 test cases, and so did a no-model baseline that calls all five checks in a fixed order. The agent did not beat the baseline. It made fewer tool calls, 63 to 76, but only because of rules written into it: it stops after one call when the data is refused, and stops early when the cost cap is set too low. The baseline made no model calls and cost nothing. The agent's simulated model cost was $0.2071.
 
-## Key finding
+The input is fixed at five tables, so a script does the same job without a model. Live models might matter for the written summary, or for inputs with a looser shape. Neither was tested.
 
-On 15 test cases the scripted agent passed 15 and a no-LLM baseline passed 15. **The agent did not beat the baseline.** The baseline is a script that calls all five tools in a fixed order; it made no model calls and cost nothing, while the agent's simulated model cost was $0.2071.
-
-The input contract is fixed at five tables, so a fixed script does the same job without a model. These results give no evidence that an LLM adds value here. A live model might matter for the narrative, or for inputs with a looser shape, and neither was tested.
-
-## What was and was not run
+| Measure | Agent | Baseline |
+|---|---:|---:|
+| Cases passed | 15 of 15 | 15 of 15 |
+| Tool calls across the 15 cases | 63 | 76 |
+| Simulated model cost | $0.2071 | $0 |
 
 | Item | Status |
 |---|---|
@@ -20,27 +20,15 @@ The input contract is fixed at five tables, so a fixed script does the same job 
 | Docker image | Not built. The Dockerfile was never built or run. |
 | Costs | Simulated. Nothing was billed. |
 
-The "model" in every result below is a scripted stand-in: a fixed policy that asks for the summary, then each available check, then writes a narrative. It is not an LLM.
+All data are synthetic. No real members, providers, payers or claims are used.
 
-## How the agent is constrained
+## How it works
 
-Detection is the deterministic SQL from `healthcare-claims-quality`, installed from a wheel in `vendor/` (version 0.3.0, built from commit `fcb3116` of that repository, SHA-256 `27188e59510a3ba0990e7559908b17fce21d5fb18a5183bde286664376a57075`). No SQL or validation logic is rewritten here; `checks.py` only splits the detector's output by tool and decides when to refuse.
+The five SQL checks come from [healthcare-claims-quality](https://github.com/yashwanth-kanajam/healthcare-claims-quality), installed from a pinned wheel in `vendor/` (version 0.3.0, built from commit `fcb3116`). None of the check logic is rewritten here. The model picks which checks to run and writes a short summary. It never touches the numbers: code copies every figure in the report from the tool results, and a summary that quotes a number no tool returned is rejected. The model never sees the claims themselves, only counts and table names.
 
-The model picks and orders the checks and writes a short narrative, and that is all it does. Every figure in the report is copied from tool output by code. The model is sent counts and schema names, never record values, and a narrative containing a number that no tool returned is rejected.
+Before testing the agent, the tools' output was matched against the original checks on 88 runs (16 from the original evaluation, 72 from the expanded one), with no differences. That comparison runs in process, not over the MCP transport. The agent and baseline cases do go over it.
 
-| Guardrail | Rule |
-|---|---|
-| Cost cap | $0.50 per run. Before each model call, the worst-case cost of that call must fit in what is left, or the call is not made. |
-| Tool calls | 12 per run, with retries counted. |
-| Retries | 2 per call. |
-| Refusal | Missing tables or columns, or values that cannot be loaded, are refused and not retried. |
-| Source files | Hashed with SHA-256 before and after each run; a changed hash fails the run. |
-| Unknown tools | Rejected before they reach the server. |
-| Any limit reached | The report is marked INCOMPLETE and lists what was not checked. |
-
-## MCP tools
-
-All five tools are read-only and take no arguments. The server reads the dataset directory once, at start, from `CLAIMS_DATA_DIR`, so a caller cannot point it anywhere else.
+The 15 cases cover clean data, each defect category, mixed defects, a missing column, a missing table, an empty value, tool errors, limits set too low, and instruction text planted in data values. Each case passes only if the status is right, the flags match the detector, the report figures match tool output, the source hashes are unchanged and the limits held.
 
 | Tool | Returns |
 |---|---|
@@ -50,34 +38,28 @@ All five tools are read-only and take no arguments. The server reads the dataset
 | `check_date_sequences` | Dates out of order under the synthetic contract |
 | `reconcile_header_to_line` | Money-contract flags, plus paid totals at header grain, at line grain, and after a naive join |
 
-## Validation
+All five tools are read-only and take no arguments. The server reads the dataset directory once, at start, from `CLAIMS_DATA_DIR`, so a caller cannot point it anywhere else.
 
-The tools were first compared with the existing detector on 88 runs (16 from the original evaluation, 72 from the expanded one), with 0 mismatches. That comparison runs in process and does not go through the MCP transport; the agent and baseline cases below do.
+| Guardrail | Rule |
+|---|---|
+| Model cost | $0.50 per run. Before each model call, its worst-case cost has to fit in what is left, or the call is not made. |
+| Tool calls | 12 per run, with retries counted. |
+| Retries | 2 per call. |
+| Refusal | Missing tables or columns, or values that cannot be loaded, are refused and not retried. |
+| Source files | Hashed with SHA-256 before and after each run. A changed hash fails the run. |
+| Unknown tools | Rejected before they reach the server. |
+| Any limit reached | The report is marked INCOMPLETE and lists what was not checked. |
 
-The agent and the baseline were then scored on the same 15 cases: clean data, each defect category, mixed defects, a missing column, a missing table, an empty value, tool errors, limits set too low, and instruction text planted in data values. A case passes only if the status is right, the flags match the detector, the report figures match tool output, the source hashes are unchanged and the limits held.
+Four more cases use scripted models built to misbehave, each aimed at one guardrail. All four were caught.
 
-| Measure | Agent | Baseline |
-|---|---:|---:|
-| Cases passed | 15 of 15 | 15 of 15 |
-| Tool calls across the 15 cases | 63 | 76 |
-| Simulated model cost | $0.2071 | $0 |
-
-The agent makes fewer tool calls because it stops after one call when the data are refused, where the baseline calls all five tools and is refused five times. With the cost cap set to $0.05 the agent stops early and reports INCOMPLETE, as designed; the baseline has no model cost, so it finishes.
-
-Four further cases use scripted models that misbehave on purpose, and all four were handled as intended.
-
-| Model behaviour | What happened |
+| Model behavior | What happened |
 |---|---|
 | Skips the date check | Report marked INCOMPLETE, with the date check listed as not run |
-| Writes a figure no tool returned | Narrative rejected; the figure is not in the report |
+| Writes a figure no tool returned | Summary rejected; the figure is not in the report |
 | Asks for a tool that would change data | Call rejected before it reached the server |
 | Repeats the same call without stopping | Stopped at 12 tool calls; report marked INCOMPLETE |
 
-Because the scripted model is a fixed policy, it cannot be misled by text. The planted-instruction case therefore shows only that planted text does not reach the model. It does not show that a live model would ignore such text.
-
-Full results: [results/RESULTS.md](results/RESULTS.md), with one report per case and runner under `results/reports/`.
-
-## Reproduce
+## Run it
 
 Requires Python 3.10+. Tested on macOS arm64 with Python 3.11 only.
 
@@ -89,7 +71,7 @@ python3.11 -m venv .venv
 .venv/bin/python -m claims_agent.evaluate --out results
 ```
 
-The suite has 26 tests and takes about 45 seconds; all 26 passed on 2026-11-13. Sixteen of them start a real MCP server over stdio, and nine test the live adapter against a mock client. The evaluation takes about five minutes and writes `results/evaluation.json`, `results/RESULTS.md` and the per-case reports.
+The suite has 26 tests and takes about 45 seconds. Sixteen of them start a real MCP server over stdio, and nine test the live adapter against a mock client. The evaluation takes about five minutes and writes `results/evaluation.json`, `results/RESULTS.md` and one report per case under `results/reports/`.
 
 To start the server on its own:
 
@@ -99,11 +81,9 @@ CLAIMS_DATA_DIR=/path/to/csvs .venv/bin/python -m claims_agent.server
 
 The directory must hold `members.csv`, `providers.csv`, `enrollment.csv`, `claim_headers.csv` and `claim_lines.csv`.
 
-## Running the live evaluation later
+### Live evaluation (not run)
 
-None of this has been run, and the steps are untested against the real API.
-
-`src/claims_agent/live.py` holds `AnthropicModel`, an adapter for the Claude API with the same interface as the scripted model, so the loop, guardrails and report do not change. Its mock tests cover the request shape, the tool-result round trip, cost accounting, the cost cap, and what happens when a reply is refused or cut off.
+None of this has been run, and the steps are untested against the real API. `src/claims_agent/live.py` holds `AnthropicModel`, an adapter for the Claude API with the same interface as the scripted model, so the loop, guardrails and report do not change. Its mock tests cover the request shape, the tool-result round trip, cost accounting, the cost cap, and what happens when a reply is refused or cut off.
 
 ```sh
 .venv/bin/python -m pip install -e '.[live]'
@@ -111,27 +91,35 @@ export ANTHROPIC_API_KEY=...
 .venv/bin/python -m claims_agent.evaluate --live claude-opus-5-5 --out results-live
 ```
 
-Each run is capped at $0.50, so the 15 agent cases cost at most $7.50. The scripted runs suggest much less, but that is an estimate and not a measurement. Prices are on file for `claude-opus-5-5`, `claude-sonnet-5-5` and `claude-haiku-5-5`; any other model is refused until a price is added to `PRICES` in `live.py`.
+Each run is capped at $0.50, so the 15 agent cases cost at most $7.50. Prices are on file for `claude-opus-5-5`, `claude-sonnet-5-5` and `claude-haiku-5-5`. Any other model is refused until a price is added to `PRICES` in `live.py`. Only the 15 agent cases use the live model. Write to a new directory, as above, so the scripted results are not overwritten.
 
-Only the 15 agent cases use the live model; the baseline and the four misbehaving-model cases do not. Each request asks the API to retry on a fallback model if the first one declines, and if a reply is refused or cut off the run ends with the unrun checks listed. Write to a new directory, as above, so the scripted results are not overwritten, and read one request and one reply by hand before trusting the totals.
+### Docker (not built)
 
-## Docker
-
-The `Dockerfile` was written but not built or run, because Docker was not available. Treat it as untested.
+The `Dockerfile` was written but never built or run.
 
 ```sh
 docker build -t claims-quality-agent .
 docker run --rm -i -v "$PWD/data:/data:ro" claims-quality-agent
 ```
 
-## Layout
+## Limitations
+
+No live LLM was run, so nothing here shows how a real model would behave. The scripted model is a fixed policy and cannot be misled by text, so the planted-instruction case only shows that planted text never reached the model, not that a model would ignore it.
+
+The number check catches made-up numbers, but not a real number attached to the wrong label. Equal pass rates say nothing about speed, how useful the summaries are, or inputs outside these 15 cases. The simulated cost counts tokens as characters divided by 4, at list price, so it is a rough guide and not a bill.
+
+The data are synthetic and small, so nothing here estimates accuracy, cost or speed on real claims. The checks cover four defect categories only, and real claim formats such as X12 or FHIR are not handled. All five tables are required. Missing tables or columns are refused, with no partial runs. Any tool exception is treated as transient and retried.
+
+Each flag is a lead for investigation, not a confirmed error, fraud or recoverable money. This is not production software. The full design and its out-of-scope list are in [SPEC.md](SPEC.md).
+
+## Reference
 
 | Path | Contents |
 |---|---|
 | `src/claims_agent/checks.py` | Shape check, refusal rules, and the split of detector output by tool |
 | `src/claims_agent/server.py` | MCP server over stdio with the five tools |
 | `src/claims_agent/toolclient.py` | MCP client with the tool-call limit, retries and unknown-tool rejection |
-| `src/claims_agent/agent.py` | Agent loop, scripted model, cost accounting, no-LLM baseline |
+| `src/claims_agent/agent.py` | Agent loop, scripted model, cost accounting, no-model baseline |
 | `src/claims_agent/live.py` | Claude API adapter (mock-tested, not run) |
 | `src/claims_agent/report.py` | Renders the report from tool output |
 | `src/claims_agent/seeds.py` | Builds the synthetic datasets for the test cases |
@@ -141,15 +129,3 @@ docker run --rm -i -v "$PWD/data:/data:ro" claims-quality-agent
 | `results/` | Evaluation output |
 | `vendor/` | The pinned `healthcare-claims-quality` wheel |
 | `SPEC.md` | The specification the project was built to |
-
-## Limitations
-
-The data are synthetic and the fixture is small, so nothing here estimates accuracy, cost or speed on real claims. The checks cover four defect categories only: exact duplicates, broken foreign keys, invalid date order, and header-to-line money reconciliation. Real claim formats such as X12 or FHIR are not handled.
-
-All five tables are required. A missing table or column is refused, and there are no partial runs. Any tool exception is treated as transient and retried.
-
-No live model was run. The simulated cost counts tokens as characters divided by 4, at list price, so it is a rough guide and not a bill.
-
-A flag is a lead for investigation, not a confirmed error, fraud or recoverable money. This is not production software.
-
-See [SPEC.md](SPEC.md) for the full design and its out-of-scope list.
